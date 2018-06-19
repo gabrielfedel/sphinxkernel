@@ -13,6 +13,5 @@
 # TODOs
 
 * colocar imagens exemplo na parte de imagens/figuras
-* entender como funciona a parte de documentar dentro do código para c
-* parte de diretiva C
-* um pouco de sintaxe
+* o que é EXPORT_SYMBOL
+* ler a partir de https://www.kernel.org/doc/html/v4.16/doc-guide/kernel-doc.html#function-documentation
