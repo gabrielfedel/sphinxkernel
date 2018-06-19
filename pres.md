@@ -54,9 +54,75 @@
 
 * pip3 install sphinx
 
-## Um pouco de sintaxe
+# Sintaxe reSt
 
-* TODO
+## Parágrafos
+
+* parágrafos são blocos de texto separados por espaço em branco
+* identação importa - todas as linhas de um mesmo parágarfo deve estar
+alinhada à esquerda no mesmo nível de identação
+
+## Marcação 'inline'
+
+* _`*itálico*`_
+* __`**negrito**`__
+* \`\`snippets\`\`
+* usar `\` para utilizar o asterísco ou crase
+* não pode ser aninhado
+* conteúdo não pode terminar nem começar com espaço em branco
+* precisam estar separdos por um caracter não-letra (pode-se usar barra 
+invertida espaço para deixar letras "coladas")
+* roles: provê marcação semântica e referência cruzada entre identificadores, 
+e serve também para formatação:
+    * exemplo: subscript
+```
+H\ :sub:`2`\ O
+```
+
+## Listas
+
+* Pode ser usar ` * `, listas numeradas, ou `#` para listas autonumeradas
+* Listas aninhadas são necessitam de linha em branco:
+
+```
+* this is
+* a list
+
+  * with a nested list
+  * and some subitems
+
+* and here the parent list continues
+```
+
+* Parágrafos de citação:
+
+```
+| These lines are
+| broken exactly like in
+| the source file.
+```
+
+## Código fonte
+
+* para ser inserido um bloco de código fonte, é necessário colocar o marcador
+especial `::` ao fim do parágrafo
+* então separar por linhas em branco, e o código deve ser identado
+* exemplo:
+
+```
+This is a normal text paragraph. The next paragraph is a code sample::
+
+   It is not processed in any way, except
+   that the indentation is removed.
+
+   It can span multiple lines.
+
+This is a normal text paragraph again.
+```
+
+## Mais referências à sintaxe
+
+* http://www.sphinx-doc.org/en/stable/rest.html
 
 # Referências específicas para o Kernel
 
@@ -91,7 +157,7 @@ $ . sphinx_1.4/bin/activate
 * cria pastas e arquivos básicos
 
 
-### conf.py
+## conf.py
 
 * configuraçoẽs gerais
 * quais módulos vão estar habilitados
@@ -124,7 +190,6 @@ Título de documento
 ===================
 ```
 
-
 ```
 Capítulos
 =========
@@ -147,11 +212,6 @@ Sub-seção
 
 * Para trechos de código maiores, que se beneficiem de "highlight" use `..
   code-block:: <language> `
-
-
-## The C Domain
-
-* TODO
 
 ## list tables
 
@@ -228,4 +288,130 @@ Sub-seção
    }
 ```
 
+# kernel-doc
 
+## kernel-doc
+
+* Permite incluir documentação presente nos fontes do kernel
+* Sintaxe:
+```
+.. kernel-doc:: source
+   :option:
+```
+
+* Exemplo: includelinux/fs.sh (sb_end_write)
+
+* kernel-doc está na árvore do kernel em Documentation/sphinx/kerneldoc.py
+e utiliza scripts/kernel-doc para extrair a documentação do código-fonte
+
+## kernel-doc - opções
+
+* export: _[source-pattern]_
+
+Inclui documentação de todas as funções no código que foram exportadas usando
+EXPORT_SYMBOL ou EXPORT_SYMBOL_GPL (no arquivo indicado em source ou em 
+qualquer indicado em source-pattern)
+
+source-pattern é útil quando os comentários estão em arquivos de cabeçalho
+
+* internal: _[source-pattern]_ 
+
+O contrário do export (só será incluído o que não usar EXPORT_SYMBOL ou EXPORT_SYMBOL_GPL)
+
+## kernel-doc - opções
+
+* doc: title
+
+Inclui documentação para `DOC: title`
+
+Exemplo 
+```
+.. kernel-doc:: drivers/gpu/drm/i915/intel_audio.c
+   :doc: High Definition Audio over HDMI and Display Port
+```
+
+* functions: function [...]
+
+* inclui documentação de cada função na lista
+
+
+# Convenções para usar kernel-doc no código
+
+## Como formatar os comentários
+
+* Comentários iniciados com `/**` são reservados para kernel-doc
+* `*/` para fechar
+* `*` para cada linha
+* os comentários devem vir logo antes da função ou tipo descrito
+
+* exemplo:
+
+```
+/**
+ * foobar() - Brief description of foobar.
+ * @argument1: Description of parameter argument1 of foobar.
+ * @argument2: Description of parameter argument2 of foobar.
+ *
+ * Longer description of foobar.
+ *
+ * Return: Description of return value of foobar.
+ */
+int foobar(int argument1, char *argument2)
+```
+
+## Como formatar os comentários
+
+* a estrutura do kernel-doc é extraída dos comentários e as funções do Sphinx 
+C Domain (http://www.sphinx-doc.org/en/stable/domains.html#the-c-domain)a
+e descrição de tipos com ancoras são gerados.
+
+## Parâmetros e argumentos
+
+* Os comentários kernel-doc descreve cada parâmetro de uma função e typedef
+ou estrutura, usando `@argument: descrição` 
+* Para cada argumento não privado um `@argument` é necessário
+* As linhas de `@argument` começam logo após a linha de abertura com breve 
+descrição da função, sem linha em branco
+
+## Parâmetros e argumentos
+
+* @argument pode ter múltiplas linhas
+
+* Se o argumento de função ou de um typedef é ... (número variável de argumentos
+a sua descrição deve seguir a seguinte notação: `@...: description`
+
+## Membros privados
+
+* Na descriçao de uma struct ou union você pode usar `private:` e `public:` tags
+
+* Membros de estruturas que estão numa área `private:` não serão listadas na 
+documentação
+
+* Para se marcar essas tags, deve-se começar exatamente após o marcador `/*`
+
+## Membros privados
+
+* Exemplo:
+
+```
+/**
+ * struct my_struct - short description
+ * @a: first member
+ * @b: second member
+ * @d: fourth member
+ *
+ * Longer description
+ */
+struct my_struct {
+    int a;
+    int b;
+/* private: internal use only */
+    int c;
+/* public: the next one is public */
+    int d;
+};
+```
+
+## Mais referências sobre convenções:
+
+* https://www.kernel.org/doc/html/v4.16/doc-guide/kernel-doc.html#function-documentation
