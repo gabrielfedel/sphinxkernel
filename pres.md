@@ -1,5 +1,6 @@
 # Sphinx
 
+
 ## Índice
 
 * Introdução
@@ -32,13 +33,11 @@
 * Simples definição de árvores de documentos 
 * Links automáticos para filhos, pais, ...
 
-## Índices automáticos
+## Outros
 
-* .
+* Indices automáticos
 
-## Highlight de código automático
-
-* . 
+* Highlight de código automático
 
 ## Extensões
 
@@ -93,7 +92,7 @@ $ . sphinx_1.4/bin/activate
 
 ### conf.py
 
-* configuraçoẽs gerais
+* configurações gerais
 * quais módulos vão estar habilitados
 * ...
 
