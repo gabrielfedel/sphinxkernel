@@ -1,13 +1,5 @@
 # Sphinx
 
-
-## Índice
-
-* Introdução
-* Instalação
-* Sphinx no kernel
-* Atividade
-
 ## Sphinx
 
 * Desenvolvido para fazer a documentação do python (https://docs.python.org/3/)
@@ -109,7 +101,7 @@ especial `::` ao fim do parágrafo
 * exemplo:
 
 ```
-This is a normal text paragraph. The next paragraph is a code sample::
+The next paragraph is a code sample::
 
    It is not processed in any way, except
    that the indentation is removed.
@@ -123,32 +115,7 @@ This is a normal text paragraph again.
 
 * http://www.sphinx-doc.org/en/stable/rest.html
 
-# Referências específicas para o Kernel
-
-## Instalação para documentação do kernel
-
-* Documentação do kernel sugere utilizar um ambiente virtual
-
-`$ virtualenv sphinx_1.4
-
-$ . sphinx_1.4/bin/activate
-
-(sphinx_1.4) $ pip install -r Documentation/sphinx/requirements.txt
-`
-
-* Para trabalhar com imagens instalar pacotes GraphViz e ImageMagick (irão dar
-  suporte à GraphViz e arquivos svg)
-
-* Script para verificar dependências do sphinx: /scripts/sphinx-pre-install
-
-## Gerando documentação do Kernel
-
-* make htmldocs
-* make pdfdocs
-* Documents/output
-* para limpar: make cleandocs
-* passar configurações para o sphinx : 
-
+# Começando um novo projeto
 
 ## Configuração de projeto
 
@@ -161,6 +128,37 @@ $ . sphinx_1.4/bin/activate
 * configurações gerais
 * quais módulos vão estar habilitados
 * ...
+
+
+# Referências específicas para o Kernel
+
+## Instalação para documentação do kernel
+
+* Documentação do kernel sugere utilizar um ambiente virtual
+
+```
+$ virtualenv sphinx_1.4
+
+$ . sphinx_1.4/bin/activate
+
+(sphinx_1.4) $ pip install -r \
+Documentation/sphinx/requirements.txt
+```
+
+* Para trabalhar com imagens instalar pacotes GraphViz e ImageMagick (irão dar
+  suporte à GraphViz e arquivos svg)
+
+* Script para verificar dependências do sphinx: /scripts/sphinx-pre-install
+
+## Gerando documentação do Kernel
+
+* make htmldocs
+* make pdfdocs
+* Documents/output
+* para limpar: make cleandocs
+* passar configurações para o sphinx usar variável de ambiente SPHINXOPTS
+
+
 
 ## Escrevendo documentação para o kenel
 
@@ -215,7 +213,7 @@ Sub-seção
 ## list tables
 
 * Para tabelas é recomendado _list tables_, ao invés do ASCII-art
-* É fácil d criar e modificar, é o diff tem muito mais significado 
+* É fácil de criar e modificar, e o diff tem muito mais significado 
 
 ## flat table
 
@@ -331,7 +329,7 @@ Exemplo
 
 * functions: function [...]
 
-* inclui documentação de cada função na lista
+inclui documentação de cada função na lista
 
 
 # Convenções para usar kernel-doc no código
@@ -343,13 +341,13 @@ Exemplo
 * `*` para cada linha
 * os comentários devem vir logo antes da função ou tipo descrito
 
-* exemplo:
+## Como formatar os comentários - exemplo:
 
 ```
 /**
  * foobar() - Brief description of foobar.
- * @argument1: Description of parameter argument1 of foobar.
- * @argument2: Description of parameter argument2 of foobar.
+ * @argument1: Description argument1 of foobar.
+ * @argument2: Description argument2 of foobar.
  *
  * Longer description of foobar.
  *
@@ -360,9 +358,9 @@ int foobar(int argument1, char *argument2)
 
 ## Como formatar os comentários
 
-* a estrutura do kernel-doc é extraída dos comentários e as funções do Sphinx 
-C Domain (http://www.sphinx-doc.org/en/stable/domains.html#the-c-domain)a
-e descrição de tipos com ancoras são gerados.
+* a estrutura do kernel-doc é extraída dos comentários, as funções do Sphinx 
+C Domain (http://www.sphinx-doc.org/en/stable/domains.html#the-c-domain)
+e descrição de tipos com ancoras são gerados deles.
 
 ## Parâmetros e argumentos
 
@@ -376,12 +374,12 @@ descrição da função, sem linha em branco
 
 * @argument pode ter múltiplas linhas
 
-* Se o argumento de função ou de um typedef é ... (número variável de argumentos
+* Se o argumento de função ou de um typedef é ... (número variável de argumentos)
 a sua descrição deve seguir a seguinte notação: `@...: description`
 
 ## Membros privados
 
-* Na descriçao de uma struct ou union você pode usar `private:` e `public:` tags
+* Na descrição de uma struct ou union você pode usar as tags `private:` e `public:`
 
 * Membros de estruturas que estão numa área `private:` não serão listadas na 
 documentação
@@ -414,3 +412,22 @@ struct my_struct {
 ## Mais referências sobre convenções:
 
 * https://www.kernel.org/doc/html/v4.16/doc-guide/kernel-doc.html#function-documentation
+
+## Referências
+
+* https://www.kernel.org/doc/html/v4.16/doc-guide
+* http://www.sphinx-doc.org
+* https://lwn.net/Articles/154602/ (On the value of EXPORT_SYMBOL_GPL)
+
+## Licença
+
+* Essa apresentação é liceciada por Creative Commons 4.0 Attribution-ShareAlike
+  4.0 International 
+  
+  http://creativecommons.org/licenses/by-sa/4.0/
+
+## Pandoc
+
+* Essa apresentação foi gerada com pandoc, usando o comando:
+
+`pandoc -t beamer pres.md -o pres.pdf`
